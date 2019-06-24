@@ -1,43 +1,115 @@
 <html>
 	<head>
+		<style>
+			td {
+				border: 1px solid;
+				padding: 12px;
+				text-align: center;
+			}
+			.permitted {
+				background-color: green;
+			}
+			.permission:hover {
+				cursor: pointer;
+			}
+			.user-type {
+				background-color: blue;
+			}
+			.action {
+				background-color: yellow;
+			}
+			.rules {
+				line-height: 22px;
+				padding: 13px;
+			}
+			.rules-header {
+					margin: 10px 0px 0px 0px;
+			}
+		</style>
+		
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+		
+		<script>
+			$(document).on('click', '.permission', function() {
 
+				data = $(this).data('params')
+				that = this
+				$.ajax({
+					url: 'dynamic_acls/set',
+					type: 'PUT',
+					data: {"acl": data},
+					success: function(resp) {
+						if($(that).html().trim() == 'can')
+						{
+							$(that).html("can't")
+							$(that).removeClass('permitted')
+						}
+						else
+						{
+							$(that).html('can')
+							$(that).addClass('permitted')
+						}
+						$('.rules').html(resp)
+					}
+				})
+			})
+		</script>
 	</head>
 	<body>
-		<h3>Access controll for <%= params[:type] %></h3>
+		<h3>Access controll matrix for <%= @object.name %></h3>
 		<table>
 			<thead>
 				<td>
-					User types
 				</td>
-				<td>
-					Actions
+				<td colspan="<%= @object.actions.count * @object.state_types.count %>">
+					States
 				</td>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
-
 					</td>
-					<% @object.actions.each do |action| %>
-						<td>
-							<%= action %>
+					<% @object.state_types.each do |state| %>
+						<td colspan="<%= @object.actions.count %>">
+							<%= state %>
 						</td>
+					<% end %>
+				</tr>
+				<tr>
+					<td>
+						User types
+					</td>
+					<% @object.state_types.each do |state| %>
+						<% @object.actions.each do |action| %>
+							<td class="action">
+								<%= action %>
+							</td>
+						<% end %>
 					<% end %>
 				</tr>
 				<% User.user_types.each do |user_type| %>
 					<tr>
-						<td>
+						<td class="user-type">
 							<%= user_type %>
 						</td>
-						<% @object.actions.each do |action| %>
-							<td>
-								<%= @acls.find{|acl| acl.user_type == user_type && acl.action == action}.present? %>
-							</td> 
+						<% @object.state_types.each do |state| %>
+							<% @object.actions.each do |action| %>
+								<% permitted = @acls.find{|acl| acl.user_type == user_type && acl.action == action && acl.state == state}.present? %>
+								<td class='permission <%= permitted ? 'permitted' : '' %>' data-params='<%= {"object_type" => @object.name, "user_type" => user_type, "action" => action, "state" => state }.to_json %>'>
+									<%= permitted ? 'can' : "can't" %>
+								</td> 
+							<% end %>
 						<% end %>
 					</tr>
 				<% end %>
 			</tbody>
 
 		</table>
+		<h3 class="rules-header">
+			Permitted actions
+		</h3>
+		<div class="rules">
+			<%= @rules %>
+		</div>
 	</body>
 </html>
