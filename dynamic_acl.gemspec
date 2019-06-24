@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.authors = ["Dileep Nandanam"]
   s.date = "2014-11-20"
-  s.description = "gem to wright join queries on associations"
+  s.description = "gem for Dynamic access controll with editable access controll matrix in web view"
   s.email = "dileepsnandanam@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt"
