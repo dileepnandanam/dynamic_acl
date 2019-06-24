@@ -55,3 +55,4 @@ To get started:
 Now your all set. Go to localhost:3000/dynamic_acl/<model_name>
 ex. localhost:3000/dynamic_acl/article
 
+screenshot: https://www.dropbox.com/s/2edzn8v2i8ip1c9/dynamic_acl.jpg?dl=0
