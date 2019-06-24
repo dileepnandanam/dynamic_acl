@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
     "lib/dynamic_acl/engine.rb",
     "lib/dynamic_acl/engine.rb",
     "app/controllers/dynamic_acls_controller.rb",
-    "lib/tasks/create_acl.rake",
+    "lib/tasks/install.rake",
     "lib/dynamic_acl.rb",
     "dynamic_acl.gemspec"
   ]
