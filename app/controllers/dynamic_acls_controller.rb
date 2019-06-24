@@ -1,7 +1,7 @@
 class DynamicAclsController < ActionController::Base
   skip_before_action :verify_authenticity_token
-  def index
-    @object = params[:object_type].camelize.constantize
+  def show
+    @object = params[:id].camelize.constantize
     @acls = Acl.where(object_type: @object.name).all
     @rules = rules
     render inline: ERB.new(File.open("/#{__FILE__.split('controllers').first}views/index.erb").read).result(binding), type: 'text/html'

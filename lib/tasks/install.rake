@@ -10,7 +10,7 @@ namespace :dynamic_acl do
   end
 end
 }
-      binding.pry
+
     File.open('config/routes.rb', 'w') do |f|
       f.puts lines.join("\n")
     end

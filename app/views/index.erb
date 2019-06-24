@@ -35,7 +35,7 @@
 				data = $(this).data('params')
 				that = this
 				$.ajax({
-					url: 'dynamic_acls/set',
+					url: '/dynamic_acls/set',
 					type: 'PUT',
 					data: {"acl": data},
 					success: function(resp) {
