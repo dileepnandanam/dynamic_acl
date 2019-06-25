@@ -4,7 +4,7 @@ dynamic_acl is a gem for access controll, which provides web view of an editable
 
 To get started:
 
-.. code:: bash
+
 
     #Gemfile
     gem 'dynamic_acl'
@@ -72,7 +72,7 @@ Complex actions over derived/dynamic states of resource
 
 If you have little more complicated access controll rules like student can't delete anothers article, you can define the action accordingly and set acl matrix like,
 
-.. code:: bash
+
 
     #articles_controller.rb
     def delete
@@ -98,7 +98,7 @@ And you can uncheck the cell in acl matrix under "delete_another's_article" for 
       
 You can also play with dynamic/derived states for artiles. For ex. if you want to prevent deletion of article with comments which is created by the current_user himself, like
 
-.. code:: bash
+
     #article.rb
     def self.states
         [
@@ -115,11 +115,14 @@ You can also play with dynamic/derived states for artiles. For ex. if you want t
 And you can uncheck delete action in acl matrix under state "with_comments" corresponding to students.
 
 Forbid particular user from certain action.
+
 This is little bit tricky since we create Acl object for allowed actions, if we want to allow a set of users to do something , we need to create as many Acl objects. So we create Acl objects for users who are prevented with actions like "not_create".
-ex. Acl.create(action: "not_do_action", user_id: 420, user_type: "student", object_type: "Article", state: "archived")
+    
+    ex. Acl.create(action: "not_do_action", user_id: 420, user_type: "student", object_type: "Article", state: "archived")
+
 When we call User.find(420).can?("not_do_action", @article), we will get the Acl object which means User#420 can not do this action. So we do
 
-.. code:: bash
+
     def action
         @user = User.find(420)
         unless @user.can?("not_do_action", @article)
