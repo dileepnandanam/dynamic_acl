@@ -22,6 +22,15 @@ To get started:
         "faculty"
       ]
     end
+    
+    def self.actions
+        [
+          "create",
+          "edit",
+          "update",
+          "delete"
+        ]
+      end
 
     def user_type
       if admin?
@@ -56,3 +65,30 @@ Now your all set. Go to localhost:3000/dynamic_acl/<model_name>
 ex. localhost:3000/dynamic_acl/article
 
 screenshot: https://www.dropbox.com/s/2edzn8v2i8ip1c9/dynamic_acl.jpg?dl=0
+
+If you have little more complicated access controll rules like student can't delete anothers article, you can define the action accordingly and set acl matrix like,
+
+.. code:: bash
+
+    #articles_controller.rb
+    def delete
+        @article = Article.find(params[:id])
+        action = @article.user != current_user ? "delete_another's_article" : "delete_his_article"
+        if current_user.can?(action, @article)
+            @article.destroy
+        end
+    end
+    
+    #article.rb
+    def self.actions
+        [ 
+          "delete_his_article",
+          "delete_another's_article",
+          "create",
+          "edit",
+          "update",
+          "delete"
+        ]
+      end
+      
+  
