@@ -66,6 +66,8 @@ ex. localhost:3000/dynamic_acl/article
 
 screenshot: https://www.dropbox.com/s/2edzn8v2i8ip1c9/dynamic_acl.jpg?dl=0
 
+NB: initially theres no access controll for the controller where we edit access right. You have to manually put some before_action methode to restrict access to DynamicAclsController depends on your app permissions.
+
 Complex actions over derived/dynamic states of resource
 
 If you have little more complicated access controll rules like student can't delete anothers article, you can define the action accordingly and set acl matrix like,
