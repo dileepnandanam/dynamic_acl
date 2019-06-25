@@ -113,3 +113,18 @@ You can also play with dynamic/derived states for artiles. For ex. if you want t
         @article.comments.count > 0 ? "with_comments" : @article.state
     end
 And you can uncheck delete action in acl matrix under state "with_comments" corresponding to students.
+
+Forbid particular user from certain action.
+This is little bit tricky since we create Acl object for allowed actions, if we want to allow a set of users to do something , we need to create as many Acl objects. So we create Acl objects for users who are prevented with actions like "not_create".
+ex. Acl.create(action: "not_do_action", user_id: 420, user_type: "student", object_type: "Article", state: "archived")
+When we call User.find(420).can?("not_do_action", @article), we will get the Acl object which means User#420 can not do this action. So we do
+
+.. code:: bash
+    def action
+        @user = User.find(420)
+        unless @user.can?("not_do_action", @article)
+            do_action(@article)
+        end
+    end
+    
+For other users, there wont be an Acl object with action "not_do_action", hence the can? method returns false.
