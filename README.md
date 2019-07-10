@@ -110,7 +110,7 @@ You can also play with dynamic/derived states for artiles. For ex. if you want t
     end
     
     def state
-        @article.comments.count > 0 ? "with_comments" : @article.state
+        @article.comments.count > 0 ? "with_comments" : state
     end
 And you can uncheck delete action in acl matrix under state "with_comments" corresponding to students.
 
